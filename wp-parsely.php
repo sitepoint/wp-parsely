@@ -262,7 +262,7 @@ class Parsely {
             if ( strpos($input['apikey'], '.') === false ||
                 strpos($input['apikey'], ' ') !== false)
                 add_settings_error(Parsely::OPTIONS_KEY, 'apikey',
-                                   'Your Parse.ly Site ID looks incorrect, it should look like "example.com".');  
+                                   'Your Parse.ly Site ID looks incorrect, it should look like "example.com".');
 
         }
 
@@ -436,14 +436,14 @@ class Parsely {
                     '@type' => 'Person',
                     'name' => $author
                 );
-                array_push($author_objects, $author_tag);  
+                array_push($author_objects, $author_tag);
             }
             $parselyPage['author']         = $author_objects;
             $parselyPage['creator']        = $authors;
             $parselyPage['publisher']      = array(
                 '@type' => 'Organization',
                 'name' => get_bloginfo('name')
-            ); 
+            );
             $parselyPage['keywords']       = $tags;
         } elseif ( is_page() && $post->post_status == 'publish' ) {
             $parselyPage['headline']       = $this->get_clean_parsely_page_value(get_the_title());
@@ -652,7 +652,7 @@ class Parsely {
             $hierarchy = rtrim($hierarchy, '/');
             array_push($tags, $hierarchy);
         }
-        // take last element in the hierarchy, a string representing the full parent->child tree, 
+        // take last element in the hierarchy, a string representing the full parent->child tree,
         // and split it into individual category names
         $tags = explode('/', end($tags));
         // remove uncategorized value from tags
@@ -679,18 +679,16 @@ class Parsely {
     * Returns a properly cleaned category/taxonomy value and will optionally use the top-level category/taxonomy value
     * if so instructed via the `use_top_level_cats` option.
     */
-     private function get_category_name($postObj, $parselyOptions) { 
+     private function get_category_name($postObj, $parselyOptions) {
         $taxonomy_dropdown_choice = get_the_terms($postObj->ID, $parselyOptions['custom_taxonomy_section']);
-        // Get top-level taxonomy name for chosen taxonomy and assign to $parent_name; it will be used 
-        // as the category value if 'use_top_level_cats' option is checked. 
+        // Get top-level taxonomy name for chosen taxonomy and assign to $parent_name; it will be used
+        // as the category value if 'use_top_level_cats' option is checked.
         // Assign as "Uncategorized" if no value is checked for the chosen taxonomy.
         if ( !empty($taxonomy_dropdown_choice) ) {
             $first_term = array_shift($taxonomy_dropdown_choice);
             $parent_name = $this->get_top_level_term($first_term->term_id, $first_term->taxonomy);
             $child_name = $this->get_bottom_level_term($postObj->ID, $parselyOptions['custom_taxonomy_section']);
             $category = $parselyOptions['use_top_level_cats'] ? $parent_name : $child_name;
-        } else {
-            $category = 'Uncategorized';
         }
         $category = apply_filters( 'wp_parsely_post_category', $category, $postObj, $parselyOptions );
         $category = $this->get_clean_parsely_page_value( $category );
@@ -698,7 +696,7 @@ class Parsely {
     }
 
     /**
-    * Return the top-most category/taxonomy value in a hierarcy given a taxonomy value's ID 
+    * Return the top-most category/taxonomy value in a hierarcy given a taxonomy value's ID
     * (Wordpress calls taxonomy values 'terms').
     */
     private function get_top_level_term($term_id, $taxonomy_name) {
