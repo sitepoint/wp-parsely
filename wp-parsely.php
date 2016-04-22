@@ -398,6 +398,19 @@ class Parsely {
         global $post;
         $display = TRUE;
 
+        $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "";
+        include_once('parsely-referrer-blacklist.php');
+        $blacklisted = false;
+
+        foreach ( $blacklist as $str ) {
+          if (strpos($referrer, $str) !== false) {
+            $blacklisted = true;
+            break;
+          }
+        }
+
+        $display = !$blacklisted;
+
         if ( is_single() && $post->post_status != 'publish' ) {
             $display = FALSE;
         }
@@ -770,4 +783,3 @@ if ( class_exists('Parsely') ) {
     define('PARSELY_VERSION', Parsely::VERSION);
     $parsely = new Parsely();
 }
-
